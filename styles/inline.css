@@ -91,9 +91,13 @@ body {
   border: none;
   outline: none; }
 .header #butRefresh {
-  background: url(/weatherWebApp/images/ic_refresh_white_24px.svg) center center no-repeat; }
+  background: url(/weatherWebApp/images/ic_refresh_white_24px.svg) center center no-repeat;
+  cursor: pointer;
+}
 .header #butAdd {
-  background: url(/weatherWebApp/images/ic_add_white_24px.svg) center center no-repeat; }
+  background: url(/weatherWebApp/images/ic_add_white_24px.svg) center center no-repeat;
+  cursor: pointer;
+}
 
 .header__title {
   font-weight: 400;
