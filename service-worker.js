@@ -5,6 +5,8 @@
 // this way of caching is dangerous
 // consider https://github.com/GoogleChrome/sw-precache for cache management
 var cacheName = 'weatherPWA-step-5-1';
+var dataCacheName = 'weatherData-v1';
+
 var filesToCache = [
     'index.html',
     'scripts/app.js',
@@ -48,11 +50,26 @@ self.addEventListener('activate', function(e) {
     );
 });
 
+// respond to data requests differently than others
 self.addEventListener('fetch', function(e) {
     console.log('[ServiceWorker] Fetch', e.request.url);
-    e.respondWith(
-        caches.match(e.request).then(function(response) {
-            return response || fetch(e.request);
-        })
-    );
+    var dataUrl = 'https://publicdata-weather.firebaseio.com/';
+    if (e.request.url.indexOf(dataUrl) === 0) {
+        e.respondWith(
+            fetch(e.request)
+                .then(function(response) {
+                    return caches.open(dataCacheName).then(function(cache) {
+                        cache.put(e.request.url, response.clone());
+                        console.log('[ServiceWorker] Fetched&Cached Data');
+                        return response;
+                    });
+                })
+        );
+    } else {
+        e.respondWith(
+            caches.match(e.request).then(function(response) {
+                return response || fetch(e.request);
+            })
+        );
+    }
 });
