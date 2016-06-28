@@ -186,7 +186,7 @@
     var selectedCities = JSON.stringify(app.selectedCities);
     localStorage.selectedCities = selectedCities;
   };
-  
+
   /****************************************************************************
    *
    * Code required to start the app
