@@ -159,28 +159,27 @@
    *
    ****************************************************************************/
 
-  if ('caches' in window) {
-    caches.match(url).then(function(response) {
-      if (response) {
-        response.json().then(function(json) {
-          // Only update if the XHR is still pending, otherwise the XHR
-          // has already returned and provided the latest data.
-          if (app.hasRequestPending) {
-            console.log('updated from cache');
-            json.key = key;
-            json.label = label;
-            app.updateForecastCard(json);
-          }
-        });
-      }
-    });
-  }
-
-  app.hasRequestPending = true;
   // Gets a forecast for a specific city and update the card with the data
   app.getForecast = function(key, label) {
     var url = 'https://publicdata-weather.firebaseio.com/';
     url += key + '.json';
+    if ('caches' in window) {
+      caches.match(url).then(function(response) {
+        if (response) {
+          response.json().then(function(json) {
+            // Only update if the XHR is still pending, otherwise the XHR
+            // has already returned and provided the latest data.
+            if (app.hasRequestPending) {
+              console.log('[App] Forecast Updated From Cache');
+              json.key = key;
+              json.label = label;
+              app.updateForecastCard(json);
+            }
+          });
+        }
+      });
+    }
+    app.hasRequestPending = true;
     // Make the XHR to get the data, then update the card
     var request = new XMLHttpRequest();
     request.onreadystatechange = function() {
@@ -190,6 +189,7 @@
           response.key = key;
           response.label = label;
           app.hasRequestPending = false;
+          console.log('[App] Forecast Updated From Network');
           app.updateForecastCard(response);
         }
       }
