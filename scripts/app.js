@@ -46,7 +46,8 @@
     spinner: document.querySelector('.loader'),
     cardTemplate: document.querySelector('.cardTemplate'),
     container: document.querySelector('.main'),
-    addDialog: document.querySelector('.dialog-container'),
+    addDialog: document.querySelector('.dialog-add'),
+    deleteDialog: document.querySelector('.dialog-delete'),
     daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   };
 
@@ -85,6 +86,16 @@
     app.toggleAddDialog(false);
   });
 
+  //document.getElementById('butDelete').addEventListener('click', function() {
+  //  // Delete the city and close dialog
+  //  app.toggleDeleteDialog(true);
+  //});
+
+  //document.getElementById('butDeleteCity').addEventListener('click', function() {
+  //  // Close the delete city dialog
+  //  app.toggleDeleteDialog(true);
+  //});
+
 
   /*****************************************************************************
    *
@@ -92,12 +103,21 @@
    *
    ****************************************************************************/
 
-    // Toggles the visibility of the add new city dialog.
+  // Toggles the visibility of the add new city dialog.
   app.toggleAddDialog = function(visible) {
     if (visible) {
       app.addDialog.classList.add('dialog-container--visible');
     } else {
       app.addDialog.classList.remove('dialog-container--visible');
+    }
+  };
+
+  // Toggles the visibility of the delete city dialog.
+  app.toggleDeleteDialog = function(visible) {
+    if (visible) {
+      app.deleteDialog.classList.add('dialog-container--visible');
+    } else {
+      app.deleteDialog.classList.remove('dialog-container--visible');
     }
   };
 
@@ -115,7 +135,7 @@
     }
     card.querySelector('.description').textContent = data.currently.summary;
     card.querySelector('.date').textContent =
-        new Date(data.currently.time * 1000);
+        new Date(Date.now());
     card.querySelector('.current .icon').classList.add(data.currently.icon);
     card.querySelector('.current .temperature .value').textContent =
         Math.round(data.currently.temperature);
